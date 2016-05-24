@@ -15,15 +15,25 @@ router.post('/student', function(req, res, next) {
         }
     );
 
-    student.save(function (err, student) {
-        if (err) return console.error(err);
+    Student.find({name: student.name}).exec().then(function (students) {
+        if (students == false)
+            student.save(function (err, student) {
+
+                if (err) {
+                    console.log(err)
+                }
+
+            });
+        else{
+            console.log("ya existe");
+            res.status(404).res('Ya existe');
+        }
     });
 
     Student.find({}).exec().then(function (students) {
         res.json(students).end();
     });
-
-    //res.json(user.toObject());
+    
 
 
 });
